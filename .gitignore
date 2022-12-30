@@ -6,3 +6,5 @@ dist-ssr
 *.local
 /config.env
 /config/config.env
+
+yarn.lock
