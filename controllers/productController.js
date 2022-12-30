@@ -10,11 +10,6 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     folder: 'products',
   });
 
-  res.status(201).json({
-    success: true,
-    result,
-  });
-
   req.body.image = [
     {
       public_id: result.public_id,
