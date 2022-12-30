@@ -3,11 +3,11 @@ const connectDatabase = require('./config/database');
 let environment = 'production';
 // Config
 if (environment === 'production') {
-  require('dotenv').config({ path: '.env' });
+  require('dotenv').config({path : '.env'});
 } else {
-  require('dotenv').config({ path: 'config/config.env' });
+  require('dotenv').config({path : 'config/config.env'});
 }
-//require('dotenv').config({ path: 'config/config.env' });
+// require('dotenv').config({ path: 'config/config.env' });
 console.log(environment);
 
 // Handling Uncaught Exception
@@ -29,7 +29,5 @@ process.on('unhandledRejection', (err) => {
   console.log(`Error: ${err.message}`);
   console.log(`Shutting down the server due to Unhandled Promise Rejection`);
 
-  server.close(() => {
-    process.exit(1);
-  });
+  server.close(() => { process.exit(1); });
 });
