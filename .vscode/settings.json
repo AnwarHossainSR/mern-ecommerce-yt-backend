@@ -8,6 +8,10 @@
     "Hander",
     "mtop",
     "navlink",
-    "whitespac"
+    "whitespac",
+    "apifeatures",
+    "cloudinary",
+    "errorhander",
+    "Hander"
   ]
 }
