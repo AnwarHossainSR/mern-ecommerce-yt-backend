@@ -4,15 +4,14 @@ const User = require('../models/userModel.js');
 const crypto = require('crypto');
 const sendEmail = require('../utils/sendEmail');
 const sendToken = require('../utils/jwtToken');
-const cloudinary = require('cloudinary');
+const cloudinary = require('../utils/cloudinaryConfig');
 
 // Register a User
 exports.registerUser = catchAsyncErrors(async (req, res, next) => {
-  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
-  // });
+  const result = await cloudinary.uploader.upload(req.file.path, {
+    folder: 'avatars',
+  });
+
   const { name, email, password } = req.body;
 
   const user = await User.create({
@@ -20,8 +19,8 @@ exports.registerUser = catchAsyncErrors(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: 'myCloud.public_id',
-      url: 'myCloud.secure_url',
+      public_id: result.public_id,
+      url: result.secure_url,
     },
   });
 
@@ -41,13 +40,13 @@ exports.loginUser = catchAsyncErrors(async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password');
 
   if (!user) {
-    return next(new ErrorHander('Invalid email or password', 401));
+    return next(new ErrorHander('Invalid email', 401));
   }
 
   const isPasswordMatched = await user.comparePassword(password);
 
   if (!isPasswordMatched) {
-    return next(new ErrorHander('Invalid email or password', 401));
+    return next(new ErrorHander('Invalid password', 401));
   }
 
   sendToken(user, 200, res);
@@ -63,6 +62,16 @@ exports.logout = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({
     success: true,
     message: 'Logged Out',
+  });
+});
+
+// Get currently logged in user details
+exports.getUserProfile = catchAsyncErrors(async (req, res, next) => {
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json({
+    success: true,
+    user,
   });
 });
 
