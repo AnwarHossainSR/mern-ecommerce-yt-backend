@@ -17,6 +17,7 @@ const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth');
 const router = express.Router();
 const upload = require('../utils/multer');
 
+
 router.route('/register').post(upload.single('image'), registerUser);
 router.route('/login').post(loginUser);
 router.route('/logout').get(isAuthenticatedUser, logout);

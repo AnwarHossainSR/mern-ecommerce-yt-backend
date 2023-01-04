@@ -10,12 +10,13 @@ exports.createProduct = catchAsyncErrors(async (req, res, next) => {
     folder: 'products',
   });
 
-  req.body.image = [
+  req.body.images = [
     {
       public_id: result.public_id,
       url: result.secure_url,
     },
   ];
+
   req.body.user = req.user.id;
 
   const product = await Product.create(req.body);
