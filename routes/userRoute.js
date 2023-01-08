@@ -18,7 +18,7 @@ const router = express.Router();
 const upload = require('../utils/multer');
 
 router.route('/').get((req, res, next) => {
-  res.send('API is running...:smile');
+  res.send('API is running...:smile:');
 });
 router.route('/register').post(upload.single('image'), registerUser);
 router.route('/login').post(loginUser);
