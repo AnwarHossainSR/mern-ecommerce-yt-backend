@@ -1,18 +1,15 @@
-const nodeMailer = require("nodemailer");
+const nodeMailer = require('nodemailer');
 
 const sendEmail = async (options) => {
   const transporter = nodeMailer.createTransport({
     host: process.env.SMTP_HOST,
-    service: process.env.SMTP_SERVICE,
+    //service: process.env.SMTP_SERVICE,
     port: process.env.SMTP_PORT,
-    secure: true, // true for 465, false for other ports
-    secureConnection: false,
+    // secure: true, // true for 465, false for other ports
+    // secureConnection: false,
     auth: {
-      user: process.env.SMTP_MAIL,
-      pass: process.env.SMTP_PASSWORD,
-    },
-    tls: {
-      rejectUnAuthorized: true,
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
     },
   });
 
