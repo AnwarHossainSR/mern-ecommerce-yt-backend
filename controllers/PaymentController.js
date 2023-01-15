@@ -33,7 +33,7 @@ exports.createCheckoutSession = catchAsyncErrors(async (req, res, next) => {
     payment_method_types: ['card'],
     line_items: items,
     success_url: `http://localhot:3000/checkout/success`,
-    cancel_url: `http://localhot:3000/order/${order._id}`,
+    cancel_url: `http://localhot:3000/checkout/fail/${order._id}`,
     metadata: {
       orderId: order._id,
     },
