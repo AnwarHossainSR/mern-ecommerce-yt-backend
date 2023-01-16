@@ -5,12 +5,7 @@ const Order = require('../models/orderModel');
 //get Dashboard STate And Graph Data
 
 exports.getDashboardStateAndGraphData = async (req, res) => {
-  const today = new Date();
-  const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
-
-  const orders = await Order.find({
-    createdAt: { $gte: lastMonth },
-  });
+  const orders = await Order.find();
 
   const totalOrders = orders.length;
 
@@ -78,6 +73,6 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
     totalProducts,
     totalUsers,
     latestOrders,
-    graphData
+    graphData,
   });
 };
