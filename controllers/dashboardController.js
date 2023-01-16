@@ -1,6 +1,6 @@
-const User = require('../models/userModel');
-const Product = require('../models/productModel');
-const Order = require('../models/orderModel');
+const User = require("../models/userModel");
+const Product = require("../models/productModel");
+const Order = require("../models/orderModel");
 
 // get Dashboard STate And Graph Data
 
@@ -9,7 +9,7 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
   const lastMonth = new Date(today.setMonth(today.getMonth() - 1));
 
   const orders = await Order.find({
-    createdAt : {$gte : lastMonth},
+    createdAt: { $gte: lastMonth },
   });
 
   const totalOrders = orders.length;
@@ -29,28 +29,28 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
     month.setMonth(month.getMonth() - i);
     const total = await Order.aggregate([
       {
-        $match : {
-          createdAt : {
-            $gte : new Date(month.setMonth(month.getMonth() - 1)),
-            $lte : new Date(month.setMonth(month.getMonth() + 1)),
+        $match: {
+          createdAt: {
+            $gte: new Date(month.setMonth(month.getMonth() - 1)),
+            $lte: new Date(month.setMonth(month.getMonth() + 1)),
           },
         },
       },
       {
-        $project : {
-          month : {$month : '$createdAt'},
-          totalPrice : '$totalPrice',
+        $project: {
+          month: { $month: "$createdAt" },
+          totalPrice: "$totalPrice",
         },
       },
       {
-        $group : {
-          _id : '$month',
-          total : {$sum : '$totalPrice'},
+        $group: {
+          _id: "$month",
+          total: { $sum: "$totalPrice" },
         },
       },
     ]);
 
-    months.push(month.toLocaleString('default', {month : 'short'}));
+    months.push(month.toLocaleString("default", { month: "short" }));
     revenue.push(total.length > 0 ? total[0].total : 0);
   }
 
@@ -59,10 +59,10 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
 
   // return latest 5 orders with usr name, order date and total price
   const latestOrders = await Order.find()
-                           .sort({createdAt : -1})
-                           .limit(5)
-                           .populate('user', 'name')
-                           .select('user createdAt totalPrice');
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .populate("user", "name")
+    .select("user createdAt totalPrice");
 
   res.status(200).json({
     totalOrders,
