@@ -57,11 +57,21 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
   months.reverse();
   revenue.reverse();
 
+  //return latest 5 orders with usr name, order date and total price
+  const latestOrders = await Order.find()
+    .sort({ createdAt: -1 })
+    .limit(5)
+    .populate('user', 'name')
+    .select('user createdAt totalPrice');
+
+
+
   res.status(200).json({
     totalOrders,
     totalAmount,
     totalProducts,
     totalUsers,
+    latestOrders,
     revenue,
     months,
   });
