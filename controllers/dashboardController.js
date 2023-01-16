@@ -64,7 +64,13 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
     .populate('user', 'name')
     .select('user createdAt totalPrice');
 
-
+  let graphData = [];
+  months.map((month, index) => {
+    graphData.push({
+      name: month,
+      amount: revenue[index],
+    });
+  });
 
   res.status(200).json({
     totalOrders,
@@ -72,7 +78,6 @@ exports.getDashboardStateAndGraphData = async (req, res) => {
     totalProducts,
     totalUsers,
     latestOrders,
-    revenue,
-    months,
+    graphData
   });
 };
